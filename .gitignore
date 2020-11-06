@@ -1,0 +1,12 @@
+
+*.txt
+*.json
+*.cache
+*.dll
+*.props
+*.pdb
+*.targets
+*.targets
+*.targets
+*.v2
+.vs/mp3MegaSync/v16/.suo

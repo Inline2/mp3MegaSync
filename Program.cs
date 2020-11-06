@@ -21,27 +21,25 @@ namespace mp3MegaSync
                 Console.WriteLine(file);
             }
 
-            Uri link = new Uri("https://mega.nz/folder/CsFjmCAD#a2uE2YVum3dV1lSSbPOXKg");
+            Uri link = new Uri ("https://mega.nz/folder/CsFjmCAD#a2uE2YVum3dV1lSSbPOXKg");
 
             var nodes = client.GetNodesFromLink(link).OrderBy(s => s.Name);
 
             foreach (var node in nodes.Where(x => x.Type == NodeType.File))
             {
-                Console.WriteLine($"Downloading {node.Name}");
+                Console.WriteLine ($"Downloading {node.Name}");
                 try
                 {
-                    Console.WriteLine(fileNumber);
-
+                    Console.WriteLine (fileNumber);
                     try
                     {
-                        if (node.ModificationDate != files[fileNumber].LastWriteTime)
-                            File.Delete(files[fileNumber].Name);
+                        if (node.ModificationDate != files[fileNumber].LastWriteTime && node.Name == files[fileNumber].Name)
+                            File.Delete (files[fileNumber].Name);
                     }
-                    catch(IndexOutOfRangeException){}
+                    catch (IndexOutOfRangeException) {}
+                    client.DownloadFile (node, node.Name);
 
-                    client.DownloadFile(node, node.Name);
-
-                    File.SetLastWriteTime(node.Name, node.ModificationDate.Value);
+                    File.SetLastWriteTime (node.Name, node.ModificationDate.Value);
                     //if (node.ModificationDate.ToString() != files[fileNumber].LastWriteTime.ToString())
                     //{
                     //    Console.WriteLine(node.Name);
@@ -53,7 +51,7 @@ namespace mp3MegaSync
                 }
                 catch (IOException)
                 {
-                    Console.WriteLine("Download failed!\nSystem.IO.IOExcepction: you already have this file");
+                    Console.WriteLine ("Download failed!\nSystem.IO.IOExcepction: you already have this file");
                 }
                 fileNumber++;
             }
